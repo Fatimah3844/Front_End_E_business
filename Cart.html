@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="navbar">
+      <div class="logo">🌿 FreshMarket</div>
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input
+          type="text"
+          placeholder="Search for fresh produce, dairy, and more..."
+        />
+      </div>
+      <div class="nav-icons">
+        <div class="icon-badge"><i class="fa-regular fa-heart"></i></div>
+        <div class="icon-badge"><i class="fa-solid fa-cart-shopping"></i></div>
+      </div>
+    </header>
+
+    <h1 class="title">Shopping Cart</h1>
+
+    <div class="cart-container">
+      <div class="cart-items">
+        <div class="cart-card">
+          <img
+            src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b"
+          />
+
+          <div class="item-info">
+            <h3>Whole Milk</h3>
+            <p class="category">Dairy</p>
+            <p class="price">$3.79</p>
+          </div>
+
+          <div class="item-actions">
+            <button class="delete-btn">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+            <div class="quantity">
+              <button class="minus">-</button>
+              <span class="qty">1</span>
+              <button class="plus">+</button>
+            </div>
+
+            <p class="item-total">$3.79</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <h3>Order Summary</h3>
+
+        <div class="row">
+          <span>Subtotal</span>
+          <span id="subtotal">$12.78</span>
+        </div>
+
+        <div class="row">
+          <span>Tax (8%)</span>
+          <span id="tax">$1.02</span>
+        </div>
+
+        <div class="row">
+          <span>Delivery Fee</span>
+          <span>$4.99</span>
+        </div>
+
+        <hr />
+
+        <div class="total">
+          <span>Total</span>
+          <span id="total">$18.79</span>
+        </div>
+
+        <button class="checkout">Proceed to Checkout</button>
+        <button class="continue">Continue Shopping</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
