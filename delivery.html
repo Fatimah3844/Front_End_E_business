@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Dashboard | FreshMarket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body data-page="delivery">
+  <header class="navbar">
+    <a class="logo" href="index.html"><i class="fa-solid fa-seedling"></i> FreshMarket</a>
+    <div class="search-bar">
+      <i class="fa-solid fa-truck search-icon"></i>
+      <input type="text" value="Delivery Dashboard" disabled>
+    </div>
+    <div class="nav-icons">
+      <div id="roleLinks"></div>
+      <a class="icon-badge nav-link" href="index.html">Store</a>
+      <div id="authActions" class="auth-actions"></div>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="dashboard-head">
+      <h1>Delivery Center</h1>
+      <p id="statusMessage" class="status-message"></p>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="dashboard-card">
+        <h3>Available Categories</h3>
+        <ul id="deliveryCategoriesList" class="delivery-list"></ul>
+      </article>
+
+      <article class="dashboard-card">
+        <h3>Delivery Notes</h3>
+        <p class="delivery-note">
+          This page is connected to backend categories and products.
+          Delivery-specific order assignment/status APIs are not yet exposed by backend.
+        </p>
+      </article>
+    </section>
+
+    <section class="dashboard-card">
+      <h3>Product Availability Snapshot</h3>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Stock</th>
+              <th>Delivery Status</th>
+            </tr>
+          </thead>
+          <tbody id="deliveryProductsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="script-app.js"></script>
+</body>
+</html>

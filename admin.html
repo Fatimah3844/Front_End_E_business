@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | FreshMarket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body data-page="admin">
+  <header class="navbar">
+    <a class="logo" href="index.html"><i class="fa-solid fa-seedling"></i> FreshMarket</a>
+    <div class="search-bar">
+      <i class="fa-solid fa-shield-halved search-icon"></i>
+      <input type="text" value="Admin Dashboard" disabled>
+    </div>
+    <div class="nav-icons">
+      <div id="roleLinks"></div>
+      <a class="icon-badge nav-link" href="wishlist.html"><i class="fa-regular fa-heart"></i></a>
+      <a class="icon-badge nav-link" href="index.html">Store</a>
+      <div id="authActions" class="auth-actions"></div>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="dashboard-head">
+      <h1>Admin Management</h1>
+      <p id="statusMessage" class="status-message"></p>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="dashboard-card">
+        <h3>Create Category</h3>
+        <form id="categoryForm" class="admin-form">
+          <label for="categoryName">Category Name</label>
+          <input id="categoryName" type="text" required placeholder="e.g. Dairy">
+          <button class="auth-btn submit" type="submit">Create Category</button>
+        </form>
+      </article>
+
+      <article class="dashboard-card">
+        <h3>Create Product</h3>
+        <form id="productForm" class="admin-form">
+          <label for="productName">Product Name</label>
+          <input id="productName" type="text" required placeholder="e.g. Fresh Milk">
+
+          <label for="productDescription">Description</label>
+          <input id="productDescription" type="text" placeholder="Short product description">
+
+          <label for="productImageUrl">Image URL</label>
+          <input id="productImageUrl" type="url" placeholder="https://example.com/image.jpg">
+          <div id="imagePreviewWrap" style="display:none;margin-top:6px;">
+            <img id="imagePreview" src="" alt="Preview" style="width:100%;max-height:140px;object-fit:cover;border-radius:12px;border:1px solid #EBEBEB;">
+          </div>
+
+          <label for="productPrice">Price ($)</label>
+          <input id="productPrice" type="number" min="0" step="0.01" required placeholder="0.00">
+
+          <label for="productQuantity">Stock Quantity</label>
+          <input id="productQuantity" type="number" min="0" required placeholder="0">
+
+          <label for="productCategoryId">Category</label>
+          <select id="productCategoryId" required></select>
+
+          <button class="auth-btn submit" type="submit">Create Product</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="dashboard-card">
+      <h3>Categories</h3>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>ID</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="categoriesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dashboard-card">
+      <h3>Products</h3>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>ID</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="productsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="script-app.js"></script>
+</body>
+</html>

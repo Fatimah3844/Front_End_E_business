@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cart</title>
+    <title>Cart | FreshMarket</title>
+    <meta name="description" content="Review your FreshMarket cart and place your grocery order.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   </head>
 
   <body data-page="cart">
     <header class="navbar">
-      <a class="logo" href="index.html">🌿 FreshMarket</a>
+      <a class="logo" href="index.html"><i class="fa-solid fa-seedling"></i> FreshMarket</a>
       <div class="search-bar">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <input
@@ -23,6 +24,8 @@
         />
       </div>
       <div class="nav-icons">
+        <div id="roleLinks"></div>
+        <a class="icon-badge" href="wishlist.html" title="Wishlist"><i class="fa-regular fa-heart"></i></a>
         <a class="icon-badge" href="index.html"><i class="fa-solid fa-store"></i></a>
         <div id="authActions" class="auth-actions"></div>
       </div>
@@ -41,12 +44,12 @@
 
         <div class="row">
           <span>Subtotal</span>
-          <span id="subtotal">$12.78</span>
+          <span id="subtotal">$0.00</span>
         </div>
 
         <div class="row">
           <span>Tax (8%)</span>
-          <span id="tax">$1.02</span>
+          <span id="tax">$0.00</span>
         </div>
 
         <div class="row">
@@ -58,11 +61,11 @@
 
         <div class="total">
           <span>Total</span>
-          <span id="total">$18.79</span>
+          <span id="total">$4.99</span>
         </div>
 
-        <button id="checkoutBtn" class="checkout">Preview Checkout</button>
-        <button id="placeOrderBtn" class="continue">Place Order</button>
+        <button id="checkoutBtn" class="checkout">Proceed to Checkout</button>
+        <button id="continueShoppingBtn" class="continue" onclick="window.location.href='index.html'">Continue Shopping</button>
       </div>
     </div>
 

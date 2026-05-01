@@ -3,26 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMarket | Premium Grocery</title>
+    <title>FreshMarket | Fresh Grocery Delivered</title>
+    <meta name="description" content="Shop fresh dairy, fruits, vegetables and more at FreshMarket – your premium online grocery store.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- مكتبة الأيقونات -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body data-page="catalog">
     <!-- Header -->
     <header class="navbar">
-        <a class="logo" href="index.html">🌿 FreshMarket</a>
+        <a class="logo" href="index.html"><i class="fa-solid fa-seedling"></i> FreshMarket</a>
         <div class="search-bar">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input id="searchInput" type="text" placeholder="Search dairy products...">
         </div>
         <div class="nav-icons">
+            <div id="roleLinks"></div>
+            <a class="icon-badge" href="wishlist.html" title="Wishlist"><i class="fa-regular fa-heart"></i></a>
             <a class="icon-badge" href="Cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
             <div id="authActions" class="auth-actions"></div>
         </div>
     </header>
 
-    <div class="container">
+    <div class="hero-banner">
+        <div class="hero-content">
+            <span class="hero-tag">Organic & Fresh</span>
+            <h1>Premium Quality<br>Groceries Daily</h1>
+            <p>Shop the finest dairy, farm-fresh fruits, and organic vegetables delivered straight to your doorstep.</p>
+            <a href="#products" class="auth-btn">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800" alt="Fresh Groceries">
+        </div>
+    </div>
+
+    <div class="categories-strip">
+        <div class="category-item active" data-cat-id="">
+            <div class="cat-icon"><i class="fa-solid fa-border-all"></i></div>
+            <span>All</span>
+        </div>
+        <div class="category-item" data-cat-id="dairy">
+            <div class="cat-icon"><i class="fa-solid fa-cow"></i></div>
+            <span>Dairy</span>
+        </div>
+        <div class="category-item" data-cat-id="fruits">
+            <div class="cat-icon"><i class="fa-solid fa-apple-whole"></i></div>
+            <span>Fruits</span>
+        </div>
+        <div class="category-item" data-cat-id="vegetables">
+            <div class="cat-icon"><i class="fa-solid fa-carrot"></i></div>
+            <span>Veggie</span>
+        </div>
+        <div class="category-item" data-cat-id="bakery">
+            <div class="cat-icon"><i class="fa-solid fa-bread-slice"></i></div>
+            <span>Bakery</span>
+        </div>
+        <div class="category-item" data-cat-id="beverages">
+            <div class="cat-icon"><i class="fa-solid fa-wine-glass"></i></div>
+            <span>Drinks</span>
+        </div>
+    </div>
+
+    <div class="container" id="products">
         <!-- Sidebar Filters -->
         <aside class="sidebar">
             <div class="filter-header">

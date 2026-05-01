@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist | FreshMarket</title>
+  <meta name="description" content="Your saved favourite products on FreshMarket.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .wishlist-page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 36px 6% 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .wishlist-page-header h1 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .wishlist-page-header h1 i {
+      color: #EF4444;
+      font-size: 1.8rem;
+    }
+    .wishlist-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .wishlist-meta span {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .wishlist-grid-wrap {
+      padding: 0 6% 60px;
+    }
+    .wishlist-empty-state {
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .wishlist-empty-state .empty-icon {
+      font-size: 4rem;
+      color: #FECACA;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .wishlist-empty-state h2 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+    .wishlist-empty-state p {
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body data-page="wishlist">
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a class="logo" href="index.html"><i class="fa-solid fa-seedling"></i> FreshMarket</a>
+    <div class="search-bar">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search your wishlist..." disabled>
+    </div>
+    <div class="nav-icons">
+      <div id="roleLinks"></div>
+      <a class="icon-badge" href="wishlist.html" title="Wishlist" style="color: #EF4444;">
+        <i class="fa-solid fa-heart"></i>
+      </a>
+      <a class="icon-badge" href="Cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+      <div id="authActions" class="auth-actions"></div>
+    </div>
+  </header>
+
+  <!-- Page heading -->
+  <div class="wishlist-page-header">
+    <h1><i class="fa-solid fa-heart"></i> My Wishlist</h1>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <p class="wishlist-meta">
+        <span id="wishlistCount">0</span> saved items
+      </p>
+      <button id="clearWishlistBtn" class="clear-filters-btn" style="font-size:0.85rem;padding:8px 18px;">
+        <i class="fa-solid fa-trash-can"></i> Clear All
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="wishlist-grid-wrap">
+    <div id="wishlistGrid" class="products-grid"></div>
+    <div id="wishlistEmpty" class="wishlist-empty-state hidden">
+      <i class="fa-regular fa-heart empty-icon"></i>
+      <h2>Your wishlist is empty</h2>
+      <p>Save your favourite products by clicking the heart icon while browsing.</p>
+      <a href="index.html" class="auth-btn">
+        <i class="fa-solid fa-store"></i>&nbsp; Browse Products
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="script-app.js"></script>
+  <script>
+    // Update wishlist count badge live
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const list = JSON.parse(localStorage.getItem('mart_wishlist') || '[]');
+        const countEl = document.getElementById('wishlistCount');
+        if (countEl) countEl.textContent = list.length;
+      } catch {}
+    });
+  </script>
+</body>
+</html>

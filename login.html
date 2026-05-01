@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | FreshMarket</title>
+  <meta name="description" content="Login to your FreshMarket account to shop fresh groceries online.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body data-page="login">
+  <main class="auth-page">
+    <section class="auth-card">
+      <p class="auth-switch"><a href="index.html">← Back to Home</a></p>
+      <h1>Welcome Back</h1>
+      <p class="auth-subtitle">Login to continue shopping fresh.</p>
+      <p id="statusMessage" class="status-message"></p>
+      <form id="loginForm" class="auth-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" required placeholder="you@example.com">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" required placeholder="Enter your password">
+
+        <button type="submit" class="auth-btn submit">Login</button>
+      </form>
+      <p class="auth-switch">No account yet? <a href="signup.html">Create one</a></p>
+    </section>
+  </main>
+  <script type="module" src="script-app.js"></script>
+</body>
+</html>
