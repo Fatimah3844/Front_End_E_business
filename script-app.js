@@ -122,32 +122,7 @@ function setupHeader() {
     }
   }
 
-  // Categories strip logic
-  const catItems = document.querySelectorAll(".category-item");
-  const catSelect = document.getElementById("categorySelect");
-  catItems.forEach(item => {
-    item.addEventListener("click", () => {
-      catItems.forEach(i => i.classList.remove("active"));
-      item.classList.add("active");
-      
-      const catId = item.dataset.catId;
-      if (catSelect) {
-        // Find matching option text (fuzzy match)
-        for (let opt of catSelect.options) {
-          if (!catId) { 
-            catSelect.value = ""; 
-            break;
-          }
-          if (opt.text.toLowerCase().includes(catId)) {
-            catSelect.value = opt.value;
-            break;
-          }
-        }
-        // Trigger change event to refresh grid
-        catSelect.dispatchEvent(new Event("change"));
-      }
-    });
-  });
+  // Categories strip logic moved to loadCategories() in initCatalogPage
 }
 
 function getProductImage(product) {
@@ -451,6 +426,62 @@ async function initCatalogPage() {
         <option value="">All Categories</option>
         ${data.map((cat) => `<option value="${cat.id}">${cat.name}</option>`).join("")}
       `;
+
+      const strip = document.querySelector(".categories-strip");
+      if (strip) {
+        const icons = {
+          "dairy": "fa-solid fa-cow",
+          "fruit": "fa-solid fa-apple-whole",
+          "veg": "fa-solid fa-carrot",
+          "bakery": "fa-solid fa-bread-slice",
+          "beverage": "fa-solid fa-wine-glass",
+          "drink": "fa-solid fa-wine-glass",
+          "meat": "fa-solid fa-drumstick-bite",
+          "meet": "fa-solid fa-drumstick-bite",
+          "snack": "fa-solid fa-cookie",
+          "default": "fa-solid fa-layer-group"
+        };
+        
+        let stripHTML = `
+          <div class="category-item active" data-cat-id="">
+              <div class="cat-icon"><i class="fa-solid fa-border-all"></i></div>
+              <span>All</span>
+          </div>
+        `;
+        
+        data.forEach(cat => {
+          const lowerName = cat.name.toLowerCase();
+          if (lowerName === "none") return;
+          
+          let iconClass = icons.default;
+          for (const key in icons) {
+            if (lowerName.includes(key)) {
+              iconClass = icons[key];
+              break;
+            }
+          }
+          stripHTML += `
+            <div class="category-item" data-cat-id="${cat.id}">
+                <div class="cat-icon"><i class="${iconClass}"></i></div>
+                <span>${cat.name}</span>
+            </div>
+          `;
+        });
+        
+        strip.innerHTML = stripHTML;
+        
+        const newCatItems = document.querySelectorAll(".category-item");
+        newCatItems.forEach(item => {
+          item.addEventListener("click", () => {
+            newCatItems.forEach(i => i.classList.remove("active"));
+            item.classList.add("active");
+            if (categorySelect) {
+              categorySelect.value = item.dataset.catId;
+              categorySelect.dispatchEvent(new Event("change"));
+            }
+          });
+        });
+      }
     } catch (error) {
       showMessage(error.message || "Failed to load categories.", true);
     }
@@ -481,6 +512,13 @@ async function initCatalogPage() {
 
   categorySelect?.addEventListener("change", async () => {
     filtersState.categoryId = categorySelect.value;
+    
+    // Sync category-strip active state
+    const allCatItems = document.querySelectorAll(".category-item");
+    allCatItems.forEach(i => i.classList.remove("active"));
+    const matchingItem = document.querySelector(`.category-item[data-cat-id="${categorySelect.value}"]`);
+    if (matchingItem) matchingItem.classList.add("active");
+
     await loadProducts();
   });
 
@@ -489,11 +527,16 @@ async function initCatalogPage() {
     if (searchInput) searchInput.value = "";
     if (priceRange) priceRange.value = String(defaultState.maxPrice);
     if (sortSelect) sortSelect.value = defaultState.sort;
-    if (categorySelect) categorySelect.value = "";
     const all = document.querySelector('input[name="stock"][value="all"]');
     if (all) all.checked = true;
     syncPriceLabel();
-    await loadProducts();
+    
+    if (categorySelect) {
+      categorySelect.value = "";
+      categorySelect.dispatchEvent(new Event("change"));
+    } else {
+      await loadProducts();
+    }
   });
 
   syncPriceLabel();
@@ -703,15 +746,20 @@ async function initAdminPage() {
 
     // Wire delete category buttons
     categoriesTableBody.querySelectorAll("[data-delete-cat-id]").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.deleteCatId;
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const id = btn.dataset.deleteCatId?.trim();
         const name = btn.dataset.deleteCatName;
+        if (!id) return;
         if (!confirm(`Delete category "${name}"? This may affect related products.`)) return;
         try {
+          console.log("Attempting to delete category:", id);
           await categoryApi.remove(id);
           showMessage(`Category "${name}" deleted.`);
           await loadCategories();
+          await loadProducts();
         } catch (error) {
+          console.error("Delete category error:", error);
           showMessage(error.message || "Failed to delete category.", true);
         }
       });

@@ -42,6 +42,7 @@ async function request(path, options, requireAuth = false) {
   const requestOptions = options || {};
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...requestOptions,
+    cache: "no-store",
     headers: {
       ...buildHeaders(requireAuth),
       ...(requestOptions.headers || {}),
