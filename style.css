@@ -1070,6 +1070,16 @@ body.role-admin .wishlist-btn {
 
 .small-action.danger:hover { background: #FEF2F2; }
 
+.row-actions, .form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.form-actions {
+  margin-top: 10px;
+}
+
 /* Delivery page */
 .delivery-list {
   margin: 0;

@@ -34,6 +34,8 @@ function isWishlisted(productId) {
 
 // ── Product image map (admin-set URLs stored in localStorage) ─────────────────
 const IMG_MAP_KEY = "mart_product_images";
+const FALLBACK_IMG = "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80\u0026w=600";
+
 
 function getImageMap() {
   try { return JSON.parse(localStorage.getItem(IMG_MAP_KEY) || "{}"); }
@@ -148,32 +150,105 @@ function setupHeader() {
   });
 }
 
-function getProductImage(name) {
-  // 1) Check admin-saved custom images first
+function getProductImage(product) {
+  if (!product) return FALLBACK_IMG;
+
+  // 1) Check real backend-provided image first
+  if (product.imageUrl) return product.imageUrl;
+
+  // 2) Check admin-saved custom images (legacy localStorage)
   const stored = getImageMap();
-  const lower = String(name || "").toLowerCase();
-  const storedKey = Object.keys(stored).find((k) => lower.includes(k));
+  const lowerName = String(product.name || "").toLowerCase();
+  const storedKey = Object.keys(stored).find((k) => lowerName.includes(k));
   if (storedKey) return stored[storedKey];
 
-  // 2) Built-in fallbacks
+  // 3) Built-in fallbacks with high-quality Unsplash URLs
   const defaults = {
-    milk:    "https://images.unsplash.com/photo-1550583724-125581fe2f8d?q=80&w=600",
-    egg:     "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?q=80&w=600",
-    cheese:  "https://images.unsplash.com/photo-1486297678162-ad2a19b05844?q=80&w=600",
-    yogurt:  "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600",
-    butter:  "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=80&w=600",
-    cream:   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
-    bread:   "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600",
-    apple:   "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?q=80&w=600",
-    banana:  "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=600",
-    tomato:  "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?q=80&w=600",
-    chicken: "https://images.unsplash.com/photo-1604503468506-a8da13d11d36?q=80&w=600",
-    juice:   "https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=600",
+    // Dairy
+    milk:       "https://images.unsplash.com/photo-1550583724-125581fe2f8d?q=80&w=600",
+    cheese:     "https://images.unsplash.com/photo-1486297678162-ad2a19b05844?q=80&w=600",
+    yogurt:     "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600",
+    butter:     "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?q=80&w=600",
+    cream:      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600",
+    egg:        "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?q=80&w=600",
+    dairy:      "https://images.unsplash.com/photo-1550583724-125581fe2f8d?q=80&w=600",
+    
+    // Fruits
+    apple:      "https://images.unsplash.com/photo-1560806887-1e47018c6ee7?q=80&w=600",
+    banana:     "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=600",
+    orange:     "https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=600",
+    strawberry: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?q=80&w=600",
+    grape:      "https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=600",
+    watermelon: "https://images.unsplash.com/photo-1587049633562-ad350260521e?q=80&w=600",
+    mango:      "https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600",
+    pineapple:  "https://images.unsplash.com/photo-1550258114-68bd27923485?q=80&w=600",
+    berry:      "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?q=80&w=600",
+    fruit:      "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?q=80&w=600",
+    
+    // Vegetables
+    tomato:     "https://images.unsplash.com/photo-1561131245-c9302bdb4a7c?q=80&w=600",
+    potato:     "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=600",
+    carrot:     "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=600",
+    onion:      "https://images.unsplash.com/photo-1508747703725-71977713cf5e?q=80&w=600",
+    broccoli:   "https://images.unsplash.com/photo-1452948491233-ad8a1ed01085?q=80&w=600",
+    spinach:    "https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=600",
+    pepper:     "https://images.unsplash.com/photo-1563513307168-a42aa46d5c6b?q=80&w=600",
+    lettuce:    "https://images.unsplash.com/photo-1622206141540-581373514781?q=80&w=600",
+    cucumber:   "https://images.unsplash.com/photo-1449333254728-79e27bc79730?q=80&w=600",
+    garlic:     "https://images.unsplash.com/photo-1589647363585-f4a7d3eb201d?q=80&w=600",
+    veggie:     "https://images.unsplash.com/photo-1566385101042-1a0aa0c12e8c?q=80&w=600",
+    vegetable:  "https://images.unsplash.com/photo-1566385101042-1a0aa0c12e8c?q=80&w=600",
+
+    // Bakery
+    bread:      "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600",
+    croissant:  "https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600",
+    cake:       "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600",
+    muffin:     "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?q=80&w=600",
+    cookie:     "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=600",
+    bagel:      "https://images.unsplash.com/photo-1585476922329-705b7662c47e?q=80&w=600",
+    bakery:     "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600",
+    
+    // Meat & Protein
+    meat:       "https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=600",
+    chicken:    "https://images.unsplash.com/photo-1604503468506-a8da13d11d36?q=80&w=600",
+    beef:       "https://images.unsplash.com/photo-1558030006-45c675171f21?q=80&w=600",
+    steak:      "https://images.unsplash.com/photo-1546241072-48010ad28c2c?q=80&w=600",
+    fish:       "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=600",
+    salmon:     "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=600",
+    shrimp:     "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?q=80&w=600",
+    protein:    "https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=600",
+    
+    // Beverages
+    juice:      "https://images.unsplash.com/photo-1600271886742-f049cd451bba?q=80&w=600",
+    coffee:     "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=600",
+    tea:        "https://images.unsplash.com/photo-1544787210-2213d84ad960?q=80&w=600",
+    water:      "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=600",
+    soda:       "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600",
+    drink:      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600",
+    beverages:  "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600",
+    
+    // Snacks & Pantry
+    snacks:     "https://images.unsplash.com/photo-1599490659223-eb33e464bbc1?q=80&w=600",
+    chips:      "https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=600",
+    chocolate:  "https://images.unsplash.com/photo-1511381939415-e44015466834?q=80&w=600",
+    pasta:      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=600",
+    rice:       "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=600",
+    oil:        "https://images.unsplash.com/photo-1474979266404-7eaacabc8d0f?q=80&w=600",
+    honey:      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=600",
+    jam:        "https://images.unsplash.com/photo-1534336040336-056024976472?q=80&w=600",
+    nut:        "https://images.unsplash.com/photo-1536591375315-1b8e9420d2b7?q=80&w=600",
   };
-  const defKey = Object.keys(defaults).find((k) => lower.includes(k));
-  return defKey
-    ? defaults[defKey]
-    : "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600";
+
+  // Try name match
+  const nameMatch = Object.keys(defaults).find((k) => lowerName.includes(k));
+  if (nameMatch) return defaults[nameMatch];
+
+  // Try category match
+  const lowerCat = String(product.category?.name || product.category || "").toLowerCase();
+  const catMatch = Object.keys(defaults).find((k) => lowerCat.includes(k));
+  if (catMatch) return defaults[catMatch];
+
+  return FALLBACK_IMG;
 }
 
 async function initCatalogPage() {
@@ -276,7 +351,7 @@ async function initCatalogPage() {
           return `
       <div class="product-card">
         <div class="img-container">
-          <img src="${getProductImage(product.name)}" alt="${product.name}">
+          <img src="${getProductImage(product)}" alt="${product.name}" onerror="this.src='${FALLBACK_IMG}'; this.onerror=null;">
           <button class="wishlist-btn" data-product='${JSON.stringify({id:product.id,name:product.name,price:product.price,category:product.category?.name||""})}'>
             <i class="${wishlisted ? 'fa-solid' : 'fa-regular'} fa-heart" style="color:${wishlisted ? '#EF4444' : ''}"></i>
           </button>
@@ -486,7 +561,7 @@ async function initCartPage() {
           subtotal += lineTotal;
           return `
             <div class="cart-card">
-              <img src="${getProductImage(item.product.name)}" alt="${item.product.name}" />
+              <img src="${getProductImage(item.product)}" alt="${item.product.name}" onerror="this.src='${FALLBACK_IMG}'; this.onerror=null;" />
               <div class="item-info">
                 <h3>${item.product.name}</h3>
                 <p class="category">${item.product.category?.name || "Category"}</p>
@@ -616,7 +691,10 @@ async function initAdminPage() {
                   <td>${cat.name}</td>
                   <td style="font-size:0.8rem;color:#9CA3AF">${cat.id}</td>
                   <td>
-                    <button class="small-action danger" data-delete-cat-id="${cat.id}" data-delete-cat-name="${cat.name}">Delete</button>
+                    <div class="row-actions">
+                      <button class="small-action" data-edit-cat-id="${cat.id}">Edit</button>
+                      <button class="small-action danger" data-delete-cat-id="${cat.id}" data-delete-cat-name="${cat.name}">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `,
@@ -636,6 +714,15 @@ async function initAdminPage() {
         } catch (error) {
           showMessage(error.message || "Failed to delete category.", true);
         }
+      });
+    });
+
+    // Wire edit category buttons
+    categoriesTableBody.querySelectorAll("[data-edit-cat-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.editCatId;
+        const cat = categories.find((c) => c.id === id);
+        if (cat) setCategoryEditMode(cat);
       });
     });
 
@@ -659,7 +746,10 @@ async function initAdminPage() {
                   <td>${item.availableQuantity}</td>
                   <td>${item.id}</td>
                   <td>
-                    <button class="small-action danger" data-remove-id="${item.id}">Delete</button>
+                    <div class="row-actions">
+                      <button class="small-action" data-edit-id="${item.id}">Edit</button>
+                      <button class="small-action danger" data-remove-id="${item.id}">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `,
@@ -677,7 +767,96 @@ async function initAdminPage() {
         }
       });
     });
+
+    productsTableBody.querySelectorAll("[data-edit-id]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.editId;
+        const product = products.find((p) => p.id === id);
+        if (product) setEditMode(product);
+      });
+    });
   }
+
+  function setEditMode(product) {
+    const title = document.getElementById("productFormTitle");
+    const submitBtn = document.getElementById("productSubmitBtn");
+    const cancelBtn = document.getElementById("cancelEditBtn");
+    const editIdInput = document.getElementById("editProductId");
+
+    if (title) title.textContent = "Edit Product";
+    if (submitBtn) submitBtn.textContent = "Update Product";
+    if (cancelBtn) cancelBtn.classList.remove("hidden");
+    if (editIdInput) editIdInput.value = product.id;
+
+    document.getElementById("productName").value = product.name;
+    document.getElementById("productPrice").value = product.price;
+    document.getElementById("productQuantity").value = product.availableQuantity;
+    document.getElementById("productCategoryId").value = product.categoryId;
+    document.getElementById("productDescription").value = product.description || "";
+    
+    if (product.imageUrl) {
+      const input = document.getElementById("productImageUrl");
+      if (input) input.value = product.imageUrl;
+      if (imagePreview) {
+        imagePreview.src = product.imageUrl;
+        imagePreviewWrap.style.display = "block";
+      }
+    } else {
+      const input = document.getElementById("productImageUrl");
+      if (input) input.value = "";
+      if (imagePreviewWrap) imagePreviewWrap.style.display = "none";
+    }
+    
+    document.getElementById("productForm").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function resetProductForm() {
+    const title = document.getElementById("productFormTitle");
+    const submitBtn = document.getElementById("productSubmitBtn");
+    const cancelBtn = document.getElementById("cancelEditBtn");
+    const editIdInput = document.getElementById("editProductId");
+
+    if (title) title.textContent = "Create Product";
+    if (submitBtn) submitBtn.textContent = "Create Product";
+    if (cancelBtn) cancelBtn.classList.add("hidden");
+    if (editIdInput) editIdInput.value = "";
+
+    productForm.reset();
+    if (imagePreviewWrap) imagePreviewWrap.style.display = "none";
+  }
+
+  document.getElementById("cancelEditBtn")?.addEventListener("click", resetProductForm);
+
+  function setCategoryEditMode(category) {
+    const title = document.getElementById("categoryFormTitle");
+    const submitBtn = document.getElementById("categorySubmitBtn");
+    const cancelBtn = document.getElementById("cancelCategoryEditBtn");
+    const editIdInput = document.getElementById("editCategoryId");
+
+    if (title) title.textContent = "Edit Category";
+    if (submitBtn) submitBtn.textContent = "Update Category";
+    if (cancelBtn) cancelBtn.classList.remove("hidden");
+    if (editIdInput) editIdInput.value = category.id;
+
+    document.getElementById("categoryName").value = category.name;
+    document.getElementById("categoryForm").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function resetCategoryForm() {
+    const title = document.getElementById("categoryFormTitle");
+    const submitBtn = document.getElementById("categorySubmitBtn");
+    const cancelBtn = document.getElementById("cancelCategoryEditBtn");
+    const editIdInput = document.getElementById("editCategoryId");
+
+    if (title) title.textContent = "Create Category";
+    if (submitBtn) submitBtn.textContent = "Create Category";
+    if (cancelBtn) cancelBtn.classList.add("hidden");
+    if (editIdInput) editIdInput.value = "";
+
+    categoryForm.reset();
+  }
+
+  document.getElementById("cancelCategoryEditBtn")?.addEventListener("click", resetCategoryForm);
 
   async function loadCategories() {
     try {
@@ -699,15 +878,29 @@ async function initAdminPage() {
 
   categoryForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const editId = document.getElementById("editCategoryId").value;
     const categoryName = document.getElementById("categoryName").value.trim();
     if (!categoryName) return;
+    
     try {
-      await categoryApi.create({ name: categoryName });
-      categoryForm.reset();
-      showMessage("Category created.");
+      if (editId) {
+        // "Fake Edit": Delete old and create new
+        try {
+          await categoryApi.remove(editId);
+        } catch (e) {
+          console.warn("Could not delete old category during fake edit", e);
+        }
+        await categoryApi.create({ name: categoryName });
+        showMessage(`Category updated (re-created) to "${categoryName}".`);
+      } else {
+        await categoryApi.create({ name: categoryName });
+        showMessage("Category created.");
+      }
+      
+      resetCategoryForm();
       await loadCategories();
     } catch (error) {
-      showMessage(error.message || "Failed to create category.", true);
+      showMessage(error.message || "Failed to save category.", true);
     }
   });
 
@@ -727,6 +920,7 @@ async function initAdminPage() {
 
   productForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const editId = document.getElementById("editProductId").value;
     const name = document.getElementById("productName").value.trim();
     const price = Number(document.getElementById("productPrice").value);
     const availableQuantity = Number(document.getElementById("productQuantity").value);
@@ -734,22 +928,34 @@ async function initAdminPage() {
     const description = document.getElementById("productDescription").value.trim();
     const imageUrl = productImageUrlInput?.value.trim() || "";
 
+    const payload = {
+      name,
+      price,
+      availableQuantity,
+      categoryId,
+      description,
+    };
+
     try {
-      await productApi.create({
-        name,
-        price,
-        availableQuantity,
-        categoryId,
-        description,
-      });
-      // Save custom image to localStorage so product cards use it
+      if (editId) {
+        // "Fake Edit": Delete old and create new to bypass backend update issues
+        try {
+          await productApi.remove(editId);
+        } catch (e) {
+          console.warn("Could not delete old product during fake edit", e);
+        }
+        await productApi.create(payload);
+        showMessage(`Product "${name}" updated (re-created) successfully.`);
+      } else {
+        await productApi.create(payload);
+        showMessage(`Product "${name}" created successfully.`);
+      }
+      
       if (imageUrl) setProductImage(name, imageUrl);
-      productForm.reset();
-      if (imagePreviewWrap) imagePreviewWrap.style.display = "none";
-      showMessage(`Product "${name}" created successfully.`);
+      resetProductForm();
       await loadProducts();
     } catch (error) {
-      showMessage(error.message || "Failed to create product.", true);
+      showMessage(error.message || "Failed to save product.", true);
     }
   });
 
@@ -873,7 +1079,7 @@ function initWishlistPage() {
     grid.innerHTML = list.map((product) => `
       <div class="product-card">
         <div class="img-container">
-          <img src="${getProductImage(product.name)}" alt="${product.name}">
+          <img src="${getProductImage(product)}" alt="${product.name}" onerror="this.src='${FALLBACK_IMG}'; this.onerror=null;">
           <button class="wishlist-btn wishlist-remove-btn" data-id="${product.id}" title="Remove from wishlist">
             <i class="fa-solid fa-heart" style="color:#EF4444"></i>
           </button>

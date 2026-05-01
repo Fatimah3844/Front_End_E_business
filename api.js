@@ -93,6 +93,16 @@ const categoryApi = {
       true,
     );
   },
+  update(id, payload) {
+    return request(
+      `/category/${id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(payload),
+      },
+      true,
+    );
+  },
   remove(id) {
     return request(
       `/category/${id}`,

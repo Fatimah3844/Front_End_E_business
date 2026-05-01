@@ -33,17 +33,23 @@
 
     <section class="dashboard-grid">
       <article class="dashboard-card">
-        <h3>Create Category</h3>
+        <h3 id="categoryFormTitle">Create Category</h3>
         <form id="categoryForm" class="admin-form">
+          <input type="hidden" id="editCategoryId" value="">
           <label for="categoryName">Category Name</label>
           <input id="categoryName" type="text" required placeholder="e.g. Dairy">
-          <button class="auth-btn submit" type="submit">Create Category</button>
+          <div class="form-actions">
+            <button class="auth-btn submit" type="submit" id="categorySubmitBtn">Create Category</button>
+            <button class="auth-btn secondary hidden" type="button" id="cancelCategoryEditBtn">Cancel</button>
+          </div>
         </form>
       </article>
 
       <article class="dashboard-card">
-        <h3>Create Product</h3>
+        <h3 id="productFormTitle">Create Product</h3>
         <form id="productForm" class="admin-form">
+          <input type="hidden" id="editProductId" value="">
+          
           <label for="productName">Product Name</label>
           <input id="productName" type="text" required placeholder="e.g. Fresh Milk">
 
@@ -53,7 +59,7 @@
           <label for="productImageUrl">Image URL</label>
           <input id="productImageUrl" type="url" placeholder="https://example.com/image.jpg">
           <div id="imagePreviewWrap" style="display:none;margin-top:6px;">
-            <img id="imagePreview" src="" alt="Preview" style="width:100%;max-height:140px;object-fit:cover;border-radius:12px;border:1px solid #EBEBEB;">
+            <img id="imagePreview" src="" alt="Preview" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600'; this.onerror=null;" style="width:100%;max-height:140px;object-fit:cover;border-radius:12px;border:1px solid #EBEBEB;">
           </div>
 
           <label for="productPrice">Price ($)</label>
@@ -65,7 +71,10 @@
           <label for="productCategoryId">Category</label>
           <select id="productCategoryId" required></select>
 
-          <button class="auth-btn submit" type="submit">Create Product</button>
+          <div class="form-actions">
+            <button class="auth-btn submit" type="submit" id="productSubmitBtn">Create Product</button>
+            <button class="auth-btn secondary hidden" type="button" id="cancelEditBtn">Cancel</button>
+          </div>
         </form>
       </article>
     </section>
